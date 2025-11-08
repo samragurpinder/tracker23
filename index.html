@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurpinder's Prep Tracker</title>
+    
+    <!-- Google Fonts: Poppins & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Import Map -->
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@heroicons/react/": "https://aistudiocdn.com/@heroicons/react@^2.2.0/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
+    "firebase/app": "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js",
+    "firebase/firestore": "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0",
+    "firebase/": "https://aistudiocdn.com/firebase@^12.5.0/"
+  }
+}
+</script>
+
+    <!-- Tailwind CSS with JIT -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+              inter: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                DEFAULT: 'rgb(var(--color-primary) / <alpha-value>)',
+                light: 'rgb(var(--color-primary-light) / <alpha-value>)',
+                dark: 'rgb(var(--color-primary-dark) / <alpha-value>)',
+              },
+              secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+              accent: 'rgb(var(--color-accent) / <alpha-value>)',
+              background: 'rgb(var(--color-background) / <alpha-value>)',
+              surface: 'rgb(var(--color-surface) / <alpha-value>)',
+              'text-primary': 'rgb(var(--color-text-primary) / <alpha-value>)',
+              'text-secondary': 'rgb(var(--color-text-secondary) / <alpha-value>)',
+              success: 'rgb(var(--color-success) / <alpha-value>)',
+              danger: 'rgb(var(--color-danger) / <alpha-value>)',
+              warning: 'rgb(var(--color-warning) / <alpha-value>)',
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Custom CSS for themes, animations, scrollbar, print -->
+    <style type="text/tailwindcss">
+        @layer base {
+            html {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            :root {
+                --color-primary: 79 70 229;
+                --color-primary-light: 99 102 241;
+                --color-primary-dark: 55 48 163;
+                --color-secondary: 100 116 139;
+                --color-accent: 229 231 235;
+                --color-background: 241 245 249;
+                --color-surface: 255 255 255;
+                --color-text-primary: 30 41 59;
+                --color-text-secondary: 100 116 139;
+                --color-success: 16 185 129;
+                --color-danger: 239 68 68;
+                --color-warning: 245 158 11;
+            }
+            .dark {
+                --color-primary: 99 102 241;
+                --color-primary-light: 129 140 248;
+                --color-primary-dark: 79 70 229;
+                --color-secondary: 148 163 184;
+                --color-accent: 51 65 85;
+                --color-background: 15 23 42;
+                --color-surface: 30 41 59;
+                --color-text-primary: 241 245 249;
+                --color-text-secondary: 148 163 184;
+            }
+            .theme-black {
+                --color-primary: 99 102 241;
+                --color-background: 0 0 0;
+                --color-surface: 26 26 26;
+                --color-text-primary: 229 231 235;
+                --color-text-secondary: 115 115 115;
+                --color-accent: 38 38 38;
+            }
+            .theme-grey {
+                --color-primary: 79 70 229;
+                --color-background: 51 65 85;
+                --color-surface: 71 85 105;
+                --color-text-primary: 241 245 249;
+                --color-text-secondary: 203 213 225;
+                --color-accent: 100 116 139;
+            }
+            .theme-white {
+                --color-primary: 79 70 229;
+                --color-background: 255 255 255;
+                --color-surface: 248 250 252;
+                --color-text-primary: 2 6 23;
+                --color-text-secondary: 71 85 105;
+                --color-accent: 226 232 240;
+            }
+            .theme-monochrome {
+                --color-primary: 156 163 175; /* gray-400 */
+                --color-primary-light: 209 213 219; /* gray-300 */
+                --color-primary-dark: 107 114 128; /* gray-500 */
+                --color-secondary: 156 163 175;
+                --color-accent: 55 65 81; /* gray-700 */
+                --color-background: 17 24 39; /* gray-900 */
+                --color-surface: 31 41 55; /* gray-800 */
+                --color-text-primary: 243 244 246; /* gray-100 */
+                --color-text-secondary: 156 163 175; /* gray-400 */
+                --color-success: 110 231 183; /* emerald-300 */
+                --color-danger: 251 113 133; /* rose-400 */
+                --color-warning: 252 211 77; /* amber-300 */
+            }
+        }
+        @layer utilities {
+            /* Custom animations */
+            .animate-fade-in { animation: fade-in 0.5s ease-in-out forwards; }
+            .animate-slide-in-down { animation: slide-in-down 0.5s ease-out forwards; }
+            .animate-slide-in-up { animation: slide-in-up 0.5s ease-out forwards; }
+            .animate-slide-in-left { animation: slide-in-left 0.5s ease-out forwards; }
+            .animate-shake { animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both; }
+            .animate-pulse-sm { animation: pulse-sm 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+            /* Keyframes */
+            @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes slide-in-down { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+            @keyframes slide-in-up { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+            @keyframes slide-in-left { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            @keyframes shake {
+                10%, 90% { transform: translate3d(-1px, 0, 0); }
+                20%, 80% { transform: translate3d(2px, 0, 0); }
+                30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+                40%, 60% { transform: translate3d(4px, 0, 0); }
+            }
+            @keyframes pulse-sm { 50% { transform: scale(1.05); } }
+            
+            /* Print styles */
+            @media print {
+                html, body {
+                    background-color: #fff !important;
+                    color: #000 !important;
+                }
+                .no-print { display: none !important; }
+                .printable-area { 
+                    box-shadow: none !important; 
+                    border: none !important; 
+                    background-color: #fff !important;
+                    font-family: 'Inter', sans-serif;
+                }
+                .printable-area h1, .printable-area h2, .printable-area h3, .printable-area h4, .printable-area h5 {
+                    font-weight: 500 !important;
+                }
+                .print-text-black { color: #000 !important; }
+                .print-bg-white { background-color: #fff !important; }
+                .page-break-before { page-break-before: always; }
+                .page-break-avoid { page-break-inside: avoid; }
+            }
+
+            /* Webkit scrollbar styling */
+            ::-webkit-scrollbar { width: 8px; height: 8px; }
+            ::-webkit-scrollbar-track { background: rgb(var(--color-background)); }
+            ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+            .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+            ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        }
+    </style>
+    
+    <!-- Load React App -->
+    <script type="module" src="/index.tsx"></script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-background text-text-primary font-sans">
+    <div id="root"></div>
+    <div id="popover-root"></div>
+</body>
+</html>
